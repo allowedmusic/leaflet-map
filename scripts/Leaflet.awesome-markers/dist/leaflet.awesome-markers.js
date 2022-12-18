@@ -25,7 +25,8 @@
             className: 'awesome-marker',
             icon: 'block',
             markerColor: 'white',
-            iconColor: 'white'
+            iconColor: 'white',
+			text: ''
         },
 
         initialize: function (options) {
@@ -54,6 +55,7 @@
             path.setAttribute('stroke', 'white');
             path.setAttribute('style', 'fill:' + options.markerColor)
 
+			
             if (options.icon && options.icon.indexOf('fa-') === 0) {
               var icongroup = document.createElementNS('http://www.w3.org/2000/svg', "foreignObject");
               var icon = document.createElement('i');
@@ -69,7 +71,28 @@
               icongroup.appendChild(icon);
               svg.appendChild(icongroup);
               
-            } else {
+            } else if (options.text){
+              var icon = document.createElementNS('http://www.w3.org/2000/svg', "text");
+              icon.innerHTML = options.text;
+			  icon.setAttribute('x', '10');
+              icon.setAttribute('y', '23');
+              icon.setAttribute('fill', options.iconColor);
+			  
+			  if(options.text.length > 3){
+				  var polygon = document.createElementNS('http://www.w3.org/2000/svg', "polygon");
+				  var svg_width = options.text.length*10;
+				  var svg_height = 42;
+				  polygon.setAttribute('points', '0,0 0,'+svg_height+' '+svg_width+', '+svg_height+' '+svg_width+',0');
+				  polygon.setAttribute('fill', options.markerColor);
+				  polygon.setAttribute('style', 'fill:' + options.markerColor);
+				  svg.appendChild(polygon);
+				  svg.setAttribute('width', svg_width);
+				}else{
+					 svg.appendChild(path);
+					 svg.appendChild(backgroundCircle);
+				 }
+				svg.appendChild(icon);
+			} else {
               var icongroup = document.createElementNS('http://www.w3.org/2000/svg', "g");
               var icon = document.createElementNS('http://www.w3.org/2000/svg', "text");
               icon.textContent = options.icon;
@@ -84,6 +107,7 @@
               icongroup.appendChild(icon);
               svg.appendChild(icongroup);
             }
+			
 
             return svg;
         },

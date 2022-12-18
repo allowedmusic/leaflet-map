@@ -124,6 +124,17 @@ $(window).on('load', function() {
           point['Marker Color'].toLowerCase(),
           point['Icon Color']
         );
+	
+	if(point['Marker Icon'].indexOf('#') > -1){
+		let text = point['Marker Icon'].toUpperCase().replace("#","");
+		icon = L.AwesomeMarkers.icon({
+		  icon: '',
+		  prefix: '',
+		  markerColor: point['Marker Color'].toLowerCase(),
+		  iconColor: point['Icon Color'],
+		  text : text
+		});
+	}
 
       if (point.Latitude !== '' && point.Longitude !== '') {
         var marker = L.marker([point.Latitude, point.Longitude], {icon: icon})
